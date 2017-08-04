@@ -1,37 +1,37 @@
-from flask import Flask,render_template,url_for,redirect,request,flash
+from flask import Flask,render_template,url_for,redirect,request,flash,jsonify
 from sqlalchemy import create_engine,asc,desc
 from sqlalchemy.orm import sessionmaker
-from tdatabase_setup import Base,Country, VisitList
+from tdatabase_setup import Base,Country, VisitList,User
 import random, string
 from flask import session as login_session
-engine=create_engine('sqlite:///catalog.db',connect_args={'check_same_thread':False})
-Base.metadata.bind=engine
-DBSession=sessionmaker(bind=engine)
-session=DBSession()
+
 
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
 import httplib2
 import json
 from flask import make_response
-import requests
-
+import requests,os
 
 CLIENT_ID = json.loads(
-    open('client_secrets.json', 'r').read())['web']['client_id']
-APPLICATION_NAME = "catalog app"
+    open('tclient_secret.json', 'r').read())['web']['client_id']
+APPLICATION_NAME = "itemcatalog"
 
+engine=create_engine('sqlite:///catalog1.db',connect_args={'check_same_thread':False})
+Base.metadata.bind=engine
+DBSession=sessionmaker(bind=engine)
+session=DBSession()
 
 app=Flask(__name__)
-
 
 @app.route('/login/')
 def showLogin():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in xrange(32))
     login_session['state'] = state
-    #return "The current session state is %s" % login_session['state']
+    #return state
     return render_template('tlogin.html', STATE=state)
+
 
 @app.route('/fbconnect', methods=['POST'])
 def fbconnect():
@@ -46,7 +46,7 @@ def fbconnect():
     app_id = json.loads(open('tfb_client_secret.json', 'r').read())[
         'web']['app_id']
     app_secret = json.loads(
-        open('fb_client_secrets.json', 'r').read())['web']['app_secret']
+        open('tfb_client_secret.json', 'r').read())['web']['app_secret']
     url = 'https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s' % (
         app_id, app_secret, access_token)
     h = httplib2.Http()
@@ -123,7 +123,7 @@ def gconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
     # Obtain authorization code
-    code = request.data
+    code=request.data
 
     try:
         # Upgrade the authorization code into a credentials object
@@ -228,6 +228,27 @@ def gdisconnect():
         response = make_response(json.dumps('Failed to revoke token for given user.', 400))
         response.headers['Content-Type'] = 'application/json'
         return response
+
+# JSON APIs to view Country information
+@app.route('/catalog/<string:countryname>/JSON')
+def RplacesJSON(countryname):
+    c1 = session.query(Country).filter_by(name=countryname).one()
+    c2 = session.query(VisitList).filter_by(country_id=c1.id).all()
+    return jsonify(c2=[i.serialize for i in c2])
+
+
+@app.route('/catalog/<string:countryname>/<string:placename>/JSON')
+def countryplaceJSON(countryname, placename):
+    place1=session.query(VisitList).filter_by(name=placename).one()
+    return jsonify(place1=[place1.serialize])
+
+
+@app.route('/catalog/JSON')
+def catalogJSON():
+    countries = session.query(Country).all()
+    return jsonify(countries=[r.serialize for r in countries])
+
+
     
 @app.route("/")
 @app.route("/catalog/")
@@ -288,6 +309,44 @@ def delinfo(countryname,placename):
         return redirect(url_for('displayitems',countryname=countryname))
     else:
         return render_template('del.html',countryname=cselect.name,placename=delItem.name,delItem=delItem)
+
+def getUserID(email):
+    try:
+        user=session.query(User).filter_by(email=email).one()
+        return user.id
+    except:
+        return None
+def getUserInfo(user_id):
+    user=session.query(User).filter_by(id=user_id).one()
+    return user
+
+def createUser(login_session):
+    newUser=User(name=login_session['username'],email=login_session['email'],picture=login_session['picture'])
+    session.add(newUser)
+    session.commit()
+    user=session.query(User).filter_by(email=login_session['email']).one()
+    return user.id
+
+@app.route('/disconnect')
+def disconnect():
+    if 'provider' in login_session:
+        if login_session['provider'] == 'google':
+            gdisconnect()
+            del login_session['gplus_id']
+            del login_session['credentials']
+        if login_session['provider'] == 'facebook':
+            fbdisconnect()
+            del login_session['facebook_id']
+        del login_session['username']
+        del login_session['email']
+        del login_session['picture']
+        del login_session['user_id']
+        del login_session['provider']
+        flash("You have successfully been logged out.")
+        return redirect(url_for('displayitems'))
+    else:
+        flash("You were not logged in")
+        return redirect(url_for('homepage'))
 
     
 if __name__== '__main__':
