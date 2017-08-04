@@ -1,0 +1,44 @@
+header{
+	width:100%;
+}
+
+.topfigure{
+	width:100%;
+	max-height:200px;
+}
+body{
+background-color:grey;
+}
+
+h1{
+	color:red;
+	font-style:italic;
+}
+
+h2{
+	color:green;
+}
+p{
+	color:black;
+}
+.container{
+	display:flex;
+}
+.main{
+	width:40%;
+	display: inline-block;
+	
+	
+.latest{
+	width:40%;
+	display: inline-block;
+
+.line{
+	width="1" ;
+	size="500";
+	display: inline-block;
+	vertical-align: top;
+}
+
+
+

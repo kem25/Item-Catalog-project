@@ -1,0 +1,41 @@
+<html>
+	<head> 
+		<link rel=stylesheet type=text/css href="{{ url_for('static', filename='tstyles1.css')}}"></link>
+	</head>
+	<body>
+	<header><img src="/static/travel.jpg" class='topfigure'>
+	<a href="{{url_for('showLogin')}}">Login</a></header>
+	<div class='container'>
+		<div class= 'main'>
+			
+
+			<h1> Countries</h1>
+
+			{%if CountryList!=[]%}
+
+
+			{%for i in CountryList%}
+			<h1><a href = '{{url_for('displayitems',countryname=i.name)}}' style= "text-decoration:none">{{i.name}}</a></h1>
+
+			{%endfor%}
+
+			{%else%}
+			<h1>You currently have no Countries in your list</h1>
+			<br>
+			{%endif%}
+		<div class='line'>	
+		<hr>
+		</div>
+		</div>
+		<div class='latest'> 
+		{%if latestList!=[]%}
+		<h1>Latest Places:</h1>
+		{%for item in latestList%}
+
+		<h2>{{item.name}}<span>({{item.country.name}})</h2>
+		{%endfor%}
+		{%endif%}
+		</div>
+	</div>
+</body>
+</html>

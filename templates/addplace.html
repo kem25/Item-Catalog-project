@@ -1,0 +1,28 @@
+<html>
+<body>
+<div>
+<h1>New Menu Item:</h1>
+<form action="{{url_for('additem',countryname=countryname)}}" method='POST'>
+<h2>Place:</h2>
+<input type='text' method='POST' name='name' >
+
+<br> 
+<h2>Descritpion:</h2>
+<input type='text' method='POST' name='description'>
+<h2>best-time:</h2>
+<input type='text' method='POST' name='best-time'>
+<h2>Category:</h2>
+<input type="radio" name="category" value="national-park" method='POST'> National-park<br>
+<input type="radio" name="category" value="amusement-park" method ='POST'> Amusement-park<br>
+<input type="radio" name="category" value="theme-park" method='POST'> Theme-park<br>
+<input type="radio" name="category" value="historical-monument" method='POST'>Historical monument<br>
+
+<br> 
+<input type='submit' value='Create'>
+<br>
+<br>
+<a href= '#'>Cancel</a>
+</form>
+</div>/
+</body>
+</html>
