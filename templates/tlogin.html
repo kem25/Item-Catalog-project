@@ -23,7 +23,7 @@
           <div id="signInButton">
           <span class="g-signin"
             data-scope="openid email"
-            data-clientid="717047962545-o2g1g0appmg4fkia7j8i3rkir4vmbdo3.apps.googleusercontent.com"
+            data-clientid="255060580064-88mtjmv21nmg5jk0ll91ghrqnqbrtk5c.apps.googleusercontent.com"
             data-redirecturi="postmessage"
             data-accesstype="offline"
             data-cookiepolicy="single_host_origin"
@@ -50,7 +50,7 @@ function signInCallback(authResult) {
         if (result) {
           $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...')
          setTimeout(function() {
-          window.location.href = "/restaurants";
+          window.location.href = "/catalog";
          }, 4000);
           
       } else if (authResult['error']) {
@@ -105,7 +105,7 @@ function signInCallback(authResult) {
         if (result) {
           $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...')
          setTimeout(function() {
-          window.location.href = "/restaurants";
+          window.location.href = "/catalog";
          }, 4000);
           
       } else {

@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker
 
 from tdatabase_setup import Base,Country,VisitList
 
-engine=create_engine('sqlite:///catalog.db')
+engine=create_engine('sqlite:///catalog1.db')
 Base.metadata.bind=engine
 DBsession=sessionmaker(bind=engine)
 session=DBsession()

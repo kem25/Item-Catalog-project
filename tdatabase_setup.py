@@ -6,12 +6,25 @@ from sqlalchemy import create_engine
 
 Base=declarative_base()
 
+class User(Base):
+    __tablename__='user'
+    name=Column(String(250),nullable=False)
+    id=Column(Integer,primary_key=True)
+    email=Column(String(250),nullable=False)
+    picture=Column(String(250))
+
 class Country(Base):
     __tablename__='country'
     name=Column(String(80),nullable=False)
     id=Column(Integer, primary_key=True)
-
-
+    
+    @property
+    def serialize(self):
+        return{
+            'name':self.name,
+            'id':self.id
+            }
+    
 class VisitList(Base):
     __tablename__='visit_list'
     name=Column(String(80),nullable=False)
@@ -22,8 +35,17 @@ class VisitList(Base):
     category=Column(String(40))
     besttime=Column(String(40))
 
+    @property
+    def serialize(self):
+        return{
+            'name':self.name,
+            'id':self.id,
+            'description':self.description,
+            'category':self.category
+            }
+            
 
-engine=create_engine('sqlite:///catalog.db')
+engine=create_engine('sqlite:///catalog1.db')
 
 Base.metadata.create_all(engine)
 
