@@ -1,12 +1,5 @@
-<html>
-	<head> 
-		<link rel=stylesheet type=text/css href="{{ url_for('static', filename='tstyles1.css')}}"></link>
-	</head>
-	<body>
-	<header><img src="/static/travel.jpg" class='topfigure'>
-	<div class="login">
-	<a class= "login-bar" href="{{url_for('showLogin')}}">Login</a></header>
-	</div>
+{% extends 'main.html' %}
+{% block content %}
 	<div class='container'>
 		<div class= 'main'>
 			
@@ -31,10 +24,9 @@
 		<h1>Latest Places:</h1>
 		{%for item in latestList%}
 
-		<h2>{{item.name}}<span>({{item.country.name}})</h2>
+		<h2>{{item.name}}<span>({{item.country.name}})</span></h2>
 		{%endfor%}
 		{%endif%}
 		</div>
-	</div>
-</body>
-</html>
+	{% endblock %}
+</div>
