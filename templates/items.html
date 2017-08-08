@@ -1,22 +1,33 @@
 {% extends 'main.html' %}
 {% block content %}
 <div class="container">
-<div>
+	<div class="main">
+			
+
+		<h1> Countries</h1>
+
+	
+		{%for i in CountryList%}
+		<h1><a href = '{{url_for('displayitems',countryname=i.name)}}' style= "text-decoration:none">{{i.name}}</a></h1>
+
+		{%endfor%}
+	</div>
+	<div class="latest">
+
+		<a href="{{url_for('additem',countryname=countryname)}}">Add Item</a>
+
+		{%if Items!=[]%}
 
 
-<a href="{{url_for('additem',countryname=countryname)}}">Add Item</a>
+		{%for i in Items%}
+		<h1><a href = "{{url_for('viewinfo',countryname=countryname,placename=i.name)}}" style= "text-decoration:none">{{i.name}}</a></h1>
+		{%endfor%}
 
-{%if Items!=[]%}
+		{%else%}
+		<h1>You currently have no places in your list</h1>
+		<br>
+		{%endif%}
+	</div>
 
-
-{%for i in Items%}
-<h1><a href = "{{url_for('viewinfo',countryname=countryname,placename=i.name)}}" style= "text-decoration:none">{{i.name}}</a></h1>
-{%endfor%}
-
-{%else%}
-<h1>You currently have no places in your list</h1>
-<br>
-{%endif%}
-</div>
-</div>
 {% endblock %}
+</div>
