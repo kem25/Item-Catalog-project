@@ -1,6 +1,6 @@
-<html>
-
-<body>
+{% extends 'main.html' %}
+{% block content %}
+<div class="container">
 <div>
 <form action="{{url_for('editinfo',countryname=countryname,placename=placename)}}" method='POST'>
 <h1>Name:</h1>
@@ -19,5 +19,5 @@
 <a href= '#'>Cancel</a>
 </form>
 </div>
-</body>
-</html>
+</div>
+{% endblock %}

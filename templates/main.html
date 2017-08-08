@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+	<head> 
+		<link rel=stylesheet type=text/css href="{{ url_for('static', filename='tstyles1.css')}}"></link>
+		{% block head %}
+		{% endblock %}
+	</head>
+	<body>
+	<header><img src="/static/travel.jpg" class='topfigure'>
+	<div class="login">
+	<a class= "login-bar" href="{{url_for('showLogin')}}">Login</a></header>
+	</div>
+	</header>
+{% block content %}{% endblock %}
+</body>
+</html>
+
+
+
+
+

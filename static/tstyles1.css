@@ -7,7 +7,7 @@ header{
 	max-height:200px;
 }
 body{
-background-color:grey;
+background-image:url({{ url_for('static', filename='taj-mahal2.jpg') }})
 }
 
 h1{
@@ -22,23 +22,40 @@ p{
 	color:black;
 }
 .container{
-	display:flex;
+	display: flex;
+	width:75%;
+	margin-left:300px;
+	background-color: burlywood;
+	padding:30px;
 }
 .main{
 	width:40%;
 	display: inline-block;
-	
+	text-align:center;
+	border-right-style: groove;
+}
 	
 .latest{
-	width:40%;
+	width:60%;
 	display: inline-block;
-
-.line{
-	width="1" ;
-	size="500";
-	display: inline-block;
-	vertical-align: top;
+	text-align:center;
 }
+.login{
+	    height: 43px;
+        background-color: cadetblue;
+}
+.login-bar{
+	  
+    font-size: larger;
+    font-family: cursive;
+    padding: 3px;
+    text-align: right;
+}
+
+
+
+
+
 
 
 

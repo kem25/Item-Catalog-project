@@ -1,7 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-
+{% extends 'main.html' %}
+{% block head %}
+   <meta name="google-signin-client_id" content="994344363808-4sr5e11dt2pn62qc3c33unf9ukfqjqne.apps.googleusercontent.com">
   <!--LOAD PRE-REQUISITES FOR GOOGLE SIGN IN -->
    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
   </script>
@@ -11,19 +10,19 @@
 <!-- END PRE-REQUISITES FOR GOOGLE SIGN IN -->
 
 
-</head>
+{% endblock %}
 
+{% block content %}
 
-<body>  
-
-
+<div class="container">
+<div>
 <!-- GOOGLE PLUS SIGN IN-->
 
           
           <div id="signInButton">
           <span class="g-signin"
             data-scope="openid email"
-            data-clientid="255060580064-88mtjmv21nmg5jk0ll91ghrqnqbrtk5c.apps.googleusercontent.com"
+            data-clientid="994344363808-4sr5e11dt2pn62qc3c33unf9ukfqjqne.apps.googleusercontent.com"
             data-redirecturi="postmessage"
             data-accesstype="offline"
             data-cookiepolicy="single_host_origin"
@@ -132,7 +131,7 @@ function signInCallback(authResult) {
 <!--END FACEBOOK SIGN IN -->
 
 
-  </body>
-
-  </html>
+  </div>
+  </div>
+  {% endblock %}
 

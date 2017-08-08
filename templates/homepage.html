@@ -4,7 +4,9 @@
 	</head>
 	<body>
 	<header><img src="/static/travel.jpg" class='topfigure'>
-	<a href="{{url_for('showLogin')}}">Login</a></header>
+	<div class="login">
+	<a class= "login-bar" href="{{url_for('showLogin')}}">Login</a></header>
+	</div>
 	<div class='container'>
 		<div class= 'main'>
 			
@@ -23,9 +25,6 @@
 			<h1>You currently have no Countries in your list</h1>
 			<br>
 			{%endif%}
-		<div class='line'>	
-		<hr>
-		</div>
 		</div>
 		<div class='latest'> 
 		{%if latestList!=[]%}

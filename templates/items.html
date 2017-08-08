@@ -1,7 +1,8 @@
-<html>
-
-<body>
+{% extends 'main.html' %}
+{% block content %}
+<div class="container">
 <div>
+
 
 <a href="{{url_for('additem',countryname=countryname)}}">Add Item</a>
 
@@ -16,7 +17,6 @@
 <h1>You currently have no places in your list</h1>
 <br>
 {%endif%}
-
 </div>
-</body>
-</html>
+</div>
+{% endblock %}

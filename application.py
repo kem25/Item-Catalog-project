@@ -186,7 +186,7 @@ def gconnect():
     login_session['username'] = data['name']
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
-    login_session['provider']=data['google']
+    #login_session['provider']=data['google']
 
     output = ''
     output += '<h1>Welcome, '
