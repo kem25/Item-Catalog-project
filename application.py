@@ -259,9 +259,10 @@ def homepage():
 
 @app.route('/catalog/<string:countryname>/')
 def displayitems(countryname):
+    CountryList=session.query(Country).all()
     SelectedCountry=session.query(Country).filter_by(name=countryname).one()
     Items=session.query(VisitList).filter_by(country_id=SelectedCountry.id).all()
-    return render_template('items.html',SelectedCountry=SelectedCountry,Items=Items,countryname=countryname)
+    return render_template('items.html',SelectedCountry=SelectedCountry,Items=Items,countryname=countryname,CountryList=CountryList)
 
 @app.route('/catalog/<string:countryname>/additem',methods=['POST','GET'])
 def additem(countryname):
