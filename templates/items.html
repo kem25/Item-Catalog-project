@@ -1,6 +1,18 @@
 {% extends 'main.html' %}
+{% block member %}
+	{% if 'username' in login_session %}
+	<h3>Logged-in as {{login_session['username']}}</h3>
+	{% endif %}
+	{% endblock %}
+{% block login %}
+{% if 'username' not in login_session %}
+<a class= "login-bar" href="{{url_for('showLogin')}}">Login</a>
+{% else %}
+<a class="login-bar" href="{{url_for('disconnect')}}">Logout</a>
+{% endif %}
+{% endblock %}
+
 {% block content %}
-<div class="container">
 	<div class="main">
 			
 
@@ -13,13 +25,14 @@
 		{%endfor%}
 	</div>
 	<div class="latest">
-
+		{% if 'username' in login_session %}
 		<a href="{{url_for('additem',countryname=countryname)}}">Add Item</a>
-
+		{% endif %}
 		{%if Items!=[]%}
 
-
+		<h1>Places({{rows}}):</h1>
 		{%for i in Items%}
+
 		<h1><a href = "{{url_for('viewinfo',countryname=countryname,placename=i.name)}}" style= "text-decoration:none">{{i.name}}</a></h1>
 		{%endfor%}
 
@@ -30,4 +43,4 @@
 	</div>
 
 {% endblock %}
-</div>
+

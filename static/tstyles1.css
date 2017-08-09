@@ -18,6 +18,9 @@ h1{
 h2{
 	color:brown;
 }
+h3{
+	color:blue;
+}
 p{
 	color:black;
 }
@@ -46,8 +49,13 @@ p{
 }
 .title{
 	display: inline-flex;
-	width:90%;
+	width:40%;
 	font-style: oblique;
+}
+.member{
+	display: inline-flex;
+	width:50%;
+	font-style: oblique
 }
 .login-bar{
 	  

@@ -1,6 +1,19 @@
 {% extends 'main.html' %}
+
+{% block member %}
+	{% if 'username' in login_session %}
+	<h3>Logged-in as {{login_session['username']}}</h3>
+	{% endif %}
+	{% endblock %}
+{% block login %}
+{% if 'username' not in login_session %}
+<a class= "login-bar" href="{{url_for('showLogin')}}">Login</a>
+{% else %}
+<a class="login-bar" href="{{url_for('disconnect')}}">Logout</a>
+{% endif %}
+{% endblock %}
 {% block content %}
-<div class="container">
+<div>
 <div>
 <h1>{{getplace.name}}</h1>
 <h2>Description:</h2>
@@ -9,4 +22,5 @@
 <a href="{{url_for('delinfo',countryname=countryname,placename=placename)}}">Delete</a>
 </div>
 </div>
+
 {% endblock %}

@@ -11,10 +11,16 @@
 
 
 {% endblock %}
+{% block member %}
+  {% if 'username' in login_session %}
+  <h3>Logged-in as {{login_session['username']}}</h3>
+  {% endif %}
+  {% endblock %}
+
 
 {% block content %}
 
-<div class="container">
+<div>
 <div>
 <!-- GOOGLE PLUS SIGN IN-->
 
@@ -133,5 +139,7 @@ function signInCallback(authResult) {
 
   </div>
   </div>
+
   {% endblock %}
+
 

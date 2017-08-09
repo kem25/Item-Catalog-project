@@ -1,12 +1,18 @@
 {% extends 'main.html' %}
+{% block member %}
+<h3>Logged-in as {{login_session['username']}}</h3>
+{% endblock %}
+{% block login %}
+<a class= "login-bar" href="{{url_for('disconnect')}}">Logout</a>
+{% endblock %}
 {% block content %}
-<div class="container">
+<div>
 <div>
 <form action="{{url_for('editinfo',countryname=countryname,placename=placename)}}" method='POST'>
 <h1>Name:</h1>
 <input type='text' name='name' placeholder="{{editItem.name}}">
 <h1>Description:</h1>
-<input type= 'text' name='description' placeholder="{{editItem.description}}">
+<input type= 'textarea' rows=100 columns=100 name='description' placeholder="{{editItem.description}}">
 <h1>Category:</h1>
 <input type='radio' name='category' value='national-park' method='POST'>National-Park<br>
 <input type='radio' name='category' value='amusement-park' method='POST'>Amusement-Park<br>
@@ -16,8 +22,9 @@
 <input type='submit' value='Submit'>
 <br>
 <br>
-<a href= '#'>Cancel</a>
+<a href="{{url_for('viewinfo',countryname=countryname,placename=placename)}}">Cancel</a>
 </form>
 </div>
 </div>
+
 {% endblock %}

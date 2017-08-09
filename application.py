@@ -17,7 +17,7 @@ CLIENT_ID = json.loads(
     open('tclient_secret.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "itemcatalog"
 
-engine=create_engine('sqlite:///catalog1.db',connect_args={'check_same_thread':False})
+engine=create_engine('sqlite:///catalog3.db',connect_args={'check_same_thread':False})
 Base.metadata.bind=engine
 DBSession=sessionmaker(bind=engine)
 session=DBSession()
@@ -30,7 +30,7 @@ def showLogin():
                     for x in xrange(32))
     login_session['state'] = state
     #return state
-    return render_template('tlogin.html', STATE=state)
+    return render_template('tlogin.html', STATE=state,login_session=login_session)
 
 
 @app.route('/fbconnect', methods=['POST'])
@@ -174,7 +174,7 @@ def gconnect():
 
     # Store the access token in the session for later use.
     login_session['access_token'] = credentials.access_token
-    login_session['gplus_id'] = gplus_id
+    login_session['gplus_id'] = 'gplus_id'
 
     # Get user info
     userinfo_url = "https://www.googleapis.com/oauth2/v1/userinfo"
@@ -184,9 +184,10 @@ def gconnect():
     data = answer.json()
 
     login_session['username'] = data['name']
+    #login_session['gplus_id']= data['gplus_id']
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
-    #login_session['provider']=data['google']
+    login_session['provider']='google'
 
     output = ''
     output += '<h1>Welcome, '
@@ -255,35 +256,40 @@ def catalogJSON():
 def homepage():
     CountryList=session.query(Country).all()
     latestList=session.query(VisitList).order_by(desc('id')).limit(7)
-    return render_template('homepage.html',CountryList=CountryList,latestList=latestList)
+    return render_template('homepage.html',CountryList=CountryList,latestList=latestList,login_session=login_session)
 
 @app.route('/catalog/<string:countryname>/')
 def displayitems(countryname):
     CountryList=session.query(Country).all()
     SelectedCountry=session.query(Country).filter_by(name=countryname).one()
     Items=session.query(VisitList).filter_by(country_id=SelectedCountry.id).all()
-    return render_template('items.html',SelectedCountry=SelectedCountry,Items=Items,countryname=countryname,CountryList=CountryList)
+    rows=session.query(VisitList).filter_by(country_id=SelectedCountry.id).count()
+    return render_template('items.html',SelectedCountry=SelectedCountry,Items=Items,countryname=countryname,CountryList=CountryList,login_session=login_session,rows=rows)
 
 @app.route('/catalog/<string:countryname>/additem',methods=['POST','GET'])
 def additem(countryname):
+    if 'username' not in login_session:
+        return redirect('/login')
     currentCountry=session.query(Country).filter_by(name=countryname).one()
     if request.method=='POST':
         newItem=VisitList(name=request.form['name'],besttime=request.form['best-time'],description=request.form['description'],country_id=currentCountry.id,category=request.form['category'])
         session.add(newItem)
         session.commit()
 
-        return redirect(url_for('displayitems',countryname=countryname))
+        return redirect(url_for('displayitems',countryname=countryname,login_session=login_session))
 
     else:
-        return render_template('addplace.html',currentCountry=currentCountry,countryname=countryname)
+        return render_template('addplace.html',currentCountry=currentCountry,countryname=countryname,login_session=login_session)
     
 @app.route('/catalog/<string:countryname>/<string:placename>/')
 def viewinfo(countryname,placename):
     getplace=session.query(VisitList).filter_by(name=placename).one()
-    return render_template('viewinfo.html',getplace=getplace,countryname=countryname,placename=placename)
+    return render_template('viewinfo.html',getplace=getplace,countryname=countryname,placename=placename,login_session=login_session)
 
 @app.route('/catalog/<string:countryname>/<string:placename>/edit/',methods=['GET','POST'])
 def editinfo(countryname,placename):
+    if 'username' not in login_session:
+        return redirect('/login')
     countryselect=session.query(Country).filter_by(name=countryname).one()
     editItem=session.query(VisitList).filter_by(name=placename).one()
     if request.method=='POST':
@@ -298,10 +304,12 @@ def editinfo(countryname,placename):
         session.commit()
         return redirect(url_for('viewinfo',countryname=countryselect.name,placename=editItem.name))
     else:
-        return render_template('editinfo.html',countryname=countryselect.name,placename=editItem.name,editItem=editItem)
+        return render_template('editinfo.html',countryname=countryselect.name,placename=editItem.name,editItem=editItem,login_session=login_session)
 
 @app.route('/catalog/<string:countryname>/<string:placename>/delete/',methods=['GET','POST'])
 def delinfo(countryname,placename):
+    if 'username' not in login_session:
+        return redirect('/login')
     cselect=session.query(Country).filter_by(name=countryname).one()
     delItem=session.query(VisitList).filter_by(name=placename).one()
     if request.method=='POST':
@@ -309,7 +317,7 @@ def delinfo(countryname,placename):
         session.commit()
         return redirect(url_for('displayitems',countryname=countryname))
     else:
-        return render_template('del.html',countryname=cselect.name,placename=delItem.name,delItem=delItem)
+        return render_template('del.html',countryname=cselect.name,placename=delItem.name,delItem=delItem,login_session=login_session)
 
 def getUserID(email):
     try:
@@ -333,18 +341,18 @@ def disconnect():
     if 'provider' in login_session:
         if login_session['provider'] == 'google':
             gdisconnect()
-            del login_session['gplus_id']
-            del login_session['credentials']
+            #del login_session['gplus_id']
+            #del login_session['credentials']
         if login_session['provider'] == 'facebook':
             fbdisconnect()
             del login_session['facebook_id']
-        del login_session['username']
-        del login_session['email']
-        del login_session['picture']
-        del login_session['user_id']
-        del login_session['provider']
+            del login_session['username']
+            del login_session['email']
+            del login_session['picture']
+            del login_session['user_id']
+            del login_session['provider']
         flash("You have successfully been logged out.")
-        return redirect(url_for('displayitems'))
+        return redirect(url_for('homepage'))
     else:
         flash("You were not logged in")
         return redirect(url_for('homepage'))

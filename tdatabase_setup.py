@@ -17,6 +17,8 @@ class Country(Base):
     __tablename__='country'
     name=Column(String(80),nullable=False)
     id=Column(Integer, primary_key=True)
+    user_id=Column(Integer,ForeignKey('user.id'))
+    user=relationship(User)
     
     @property
     def serialize(self):
@@ -34,6 +36,8 @@ class VisitList(Base):
     description=Column(String(500))
     category=Column(String(40))
     besttime=Column(String(40))
+    user_id=Column(Integer,ForeignKey('user.id'))
+    user=relationship(User)
 
     @property
     def serialize(self):
@@ -45,7 +49,7 @@ class VisitList(Base):
             }
             
 
-engine=create_engine('sqlite:///catalog1.db')
+engine=create_engine('sqlite:///catalog3.db')
 
 Base.metadata.create_all(engine)
 

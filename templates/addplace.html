@@ -1,12 +1,27 @@
 {% extends 'main.html' %}
+{% block head %}
+<script type=text/javascript src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
+  </script>
+
+<script type= text/javascript src="//apis.google.com/js/platform.js?onload=start"> </script>
+
+
+{% endblock %}
+{% block member %}
+<h3>Logged-in as {{login_session['username']}}</h3>
+{% endblock %}
+{% block login %}
+<a class= "login-bar" href="{{url_for('disconnect')}}">Logout</a>
+{% endblock %}
+
 {% block content %}
+
 <div class="container">
 <div>
 <h1>New Menu Item:</h1>
 <form action="{{url_for('additem',countryname=countryname)}}" method='POST'>
 <h2>Place:</h2>
 <input type='text' method='POST' name='name' >
-
 <br> 
 <h2>Descritpion:</h2>
 <input type='text' method='POST' name='description'>
@@ -22,8 +37,9 @@
 <input type='submit' value='Create'>
 <br>
 <br>
-<a href= '#'>Cancel</a>
+<a href= "{{url_for('displayitems',countryname=countryname)}}">Cancel</a>
 </div>
 </form>
 </div>
+
 {% endblock %}
