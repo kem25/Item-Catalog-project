@@ -1,26 +1,31 @@
 {% extends 'main.html' %}
 
 {% block member %}
+	<!-- shows username if user logged-in -->
 	{% if 'username' in login_session %}
 	<h3>Logged-in as {{login_session['username']}}</h3>
 	{% endif %}
 	{% endblock %}
+
 {% block login %}
-{% if 'username' not in login_session %}
-<a class= "login-bar" href="{{url_for('showLogin')}}">Login</a>
-{% else %}
-<a class="login-bar" href="{{url_for('disconnect')}}">Logout</a>
-{% endif %}
+	<!-- shows login if user not logged-in else shows logout -->
+	{% if 'username' not in login_session %}
+		<a class= "login-bar" href="{{url_for('showLogin')}}">Login</a>
+	{% else %}
+		<a class="login-bar" href="{{url_for('disconnect')}}">Logout</a>
+	{% endif %}
 {% endblock %}
+
 {% block content %}
+<!-- shows description of the selected item -->
 <div>
-<div>
-<h1>{{getplace.name}}</h1>
-<h2>Description:</h2>
-<p><h3>{{getplace.description}}</h3></p>
-<a href="{{url_for('editinfo',countryname=countryname,placename=getplace.name)}}">Edit</a><span> | </span>
-<a href="{{url_for('delinfo',countryname=countryname,placename=placename)}}">Delete</a>
-</div>
+	<div>
+		<h1>{{getplace.name}}</h1>
+		<h2>Description:</h2>
+		<p><h3>{{getplace.description}}</h3></p>
+		<a href="{{url_for('editinfo',countryname=countryname,placename=getplace.name)}}">Edit</a><span> | </span>
+		<a href="{{url_for('delinfo',countryname=countryname,placename=placename)}}">Delete</a>
+	</div>
 </div>
 
 {% endblock %}

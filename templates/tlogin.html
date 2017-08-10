@@ -13,9 +13,9 @@
 {% endblock %}
 {% block member %}
   {% if 'username' in login_session %}
-  <h3>Logged-in as {{login_session['username']}}</h3>
+    <h3>Logged-in as {{login_session['username']}}</h3>
   {% endif %}
-  {% endblock %}
+{% endblock %}
 
 
 {% block content %}
@@ -140,6 +140,6 @@ function signInCallback(authResult) {
   </div>
   </div>
 
-  {% endblock %}
+{% endblock %}
 
 

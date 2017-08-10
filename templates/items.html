@@ -1,45 +1,45 @@
 {% extends 'main.html' %}
+
 {% block member %}
+	<!-- if username if logged-in -->
 	{% if 'username' in login_session %}
-	<h3>Logged-in as {{login_session['username']}}</h3>
+		<h3>Logged-in as {{login_session['username']}}</h3>
 	{% endif %}
 	{% endblock %}
+
 {% block login %}
-{% if 'username' not in login_session %}
-<a class= "login-bar" href="{{url_for('showLogin')}}">Login</a>
-{% else %}
-<a class="login-bar" href="{{url_for('disconnect')}}">Logout</a>
-{% endif %}
+	<!-- shows login button if not logged-in else logout bbutton -->
+	{% if 'username' not in login_session %}
+		<a class= "login-bar" href="{{url_for('showLogin')}}">Login</a>
+	{% else %}
+		<a class="login-bar" href="{{url_for('disconnect')}}">Logout</a>
+	{% endif %}
 {% endblock %}
 
 {% block content %}
 	<div class="main">
-			
-
 		<h1> Countries</h1>
-
-	
+		<!-- shows the list of countires -->
 		{%for i in CountryList%}
-		<h1><a href = '{{url_for('displayitems',countryname=i.name)}}' style= "text-decoration:none">{{i.name}}</a></h1>
-
+			<h1><a href = '{{url_for('displayitems',countryname=i.name)}}' style= "text-decoration:none">{{i.name}}</a></h1>
 		{%endfor%}
 	</div>
-	<div class="latest">
-		{% if 'username' in login_session %}
-		<a href="{{url_for('additem',countryname=countryname)}}">Add Item</a>
-		{% endif %}
-		{%if Items!=[]%}
-
-		<h1>Places({{rows}}):</h1>
-		{%for i in Items%}
-
-		<h1><a href = "{{url_for('viewinfo',countryname=countryname,placename=i.name)}}" style= "text-decoration:none">{{i.name}}</a></h1>
-		{%endfor%}
-
-		{%else%}
-		<h1>You currently have no places in your list</h1>
-		<br>
-		{%endif%}
+		<div class="latest">
+			<!-- shows add item button only if user is logged-in -->
+			{% if 'username' in login_session %}
+				<a href="{{url_for('additem',countryname=countryname)}}">Add Item</a>
+			{% endif %}
+			<!-- shows the places inside country category -->
+			{%if Items!=[]%}
+				<h1>Places({{rows}}):</h1>
+				{%for i in Items%}
+					<h1><a href = "{{url_for('viewinfo',countryname=countryname,placename=i.name)}}" style= "text-decoration:none">{{i.name}}</a></h1>
+				{%endfor%}
+			<!-- shows message if no places present -->
+			{%else%}
+				<h1>You currently have no places in your list</h1>
+				<br>
+			{%endif%}
 	</div>
 
 {% endblock %}

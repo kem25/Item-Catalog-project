@@ -1,45 +1,44 @@
 {% extends 'main.html' %}
-	{% block member %}
+{% block member %}
+	<!-- if username if logged-in -->
 	{% if 'username' in login_session %}
-	<h3>Logged-in as {{login_session['username']}}</h3>
+		<h3>Logged-in as {{login_session['username']}}</h3>
 	{% endif %}
-	{% endblock %}
+{% endblock %}
 
 {% block login %}
-{% if 'username' not in login_session %}
-<a class= "login-bar" href="{{url_for('showLogin')}}">Login</a>
-{% else %}
-<a class="login-bar" href="{{url_for('disconnect')}}">Logout</a>
-{% endif %}
+	<!-- shows login button if not logged-in else logout bbutton -->
+	{% if 'username' not in login_session %}
+		<a class= "login-bar" href="{{url_for('showLogin')}}">Login</a>
+	{% else %}
+		<a class="login-bar" href="{{url_for('disconnect')}}">Logout</a>
+	{% endif %}
 {% endblock %}
 
 {% block content %}
 		<div class= 'main'>
-			
-
 			<h1> Countries</h1>
-
+			<!-- shows the list of countires -->
 			{%if CountryList!=[]%}
+				{%for i in CountryList%}
+					<h1><a href = '{{url_for('displayitems',countryname=i.name)}}' style= "text-decoration:none">{{i.name}}</a></h1>
 
-
-			{%for i in CountryList%}
-			<h1><a href = '{{url_for('displayitems',countryname=i.name)}}' style= "text-decoration:none">{{i.name}}</a></h1>
-
-			{%endfor%}
+				{%endfor%}
 
 			{%else%}
-			<h1>You currently have no Countries in your list</h1>
-			<br>
+				<h1>You currently have no Countries in your list</h1>
+				<br>
 			{%endif%}
 		</div>
 		<div class='latest'> 
+		<!-- shows list of 7 latest added items -->
 		{%if latestList!=[]%}
-		<h1>Latest Places:</h1>
-		{%for item in latestList%}
+			<h1>Latest Places:</h1>
+			{%for item in latestList%}
 
-		<h2>{{item.name}}<span>({{item.country.name}})</span></h2>
-		{%endfor%}
+			<h2>{{item.name}}<span>({{item.country.name}})</span></h2>
+			{%endfor%}
 		{%endif%}
 		</div>
 
-	{% endblock %}
+{% endblock %}
